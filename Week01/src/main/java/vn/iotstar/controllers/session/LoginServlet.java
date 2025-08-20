@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet(urlPatterns = {"/login"})
+@WebServlet(urlPatterns = {"/login2"})
 public class LoginServlet extends HttpServlet{
 	
 	
