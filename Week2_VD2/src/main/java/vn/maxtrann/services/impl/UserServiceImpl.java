@@ -41,4 +41,28 @@ public class UserServiceImpl implements UserService {
 		return userDao.checkExistPhone(phone);
 	}
 
+	@Override
+	public UserModel authenticate(String username, String password) {
+		 UserModel u = userDao.findByUsername(username);
+		    if (u == null) return null;
+
+		    String dbPass = u.getPassWord();               // đúng getter của bạn
+		    if (dbPass == null) return null;
+
+		    // debug tạm (xong việc nhớ bỏ)
+		    System.out.println("[LOGIN] input=" + password + " / db=" + dbPass);
+
+		    return password.equals(dbPass) ? u : null;     // nếu có hash thì thay bằng hasher.matches
+	}
+
+	@Override
+	public boolean updatePasswordByUsername(String username, String newPassword) {
+		return userDao.updatePasswordByUsername(username, newPassword);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		return userDao.existsByUsername(username);
+	}
+
 }

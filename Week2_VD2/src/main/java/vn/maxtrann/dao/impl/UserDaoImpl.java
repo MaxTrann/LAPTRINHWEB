@@ -15,7 +15,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void insert(UserModel user) {
-		String sql = "INSERT INTO Users(email, username, fullname, password, avatar, roleid, phone, createddate) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Users (email, userName, fullName, passWord, avatar, roleid, phone, createdDate) "
+		           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -55,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean checkExistUsername(String username) {
 		boolean duplicate = false;
-		String query = "select * from Users where username = ?";
+		String query = "select * from Users where userName = ?";
 		try {
 			conn = new DBConnect().getConnection();
 			ps = conn.prepareStatement(query);
@@ -90,4 +91,62 @@ public class UserDaoImpl implements UserDao {
 		}
 		return duplicate;
 	}
+
+	@Override
+	public boolean updatePasswordByUsername(String username, String newPassword) {
+		String sql = "UPDATE Users SET passWord = ? WHERE userName = ?";
+		try (Connection con = new DBConnect().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, newPassword);
+			ps.setString(2, username);
+			return ps.executeUpdate() > 0;
+		} catch (Exception ex) {
+		}
+		return false;
+	}
+
+	@Override
+	public UserModel findByUsername(String username) {
+		final String sql = "SELECT id, email, userName, passWord, fullName, avatar, roleid, phone, createdDate " +
+		        "FROM Users WHERE userName = ?";
+		try (Connection con = new DBConnect().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, username == null ? null : username.trim());
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					UserModel u = new UserModel();
+					u.setId(rs.getInt("id"));
+					u.setEmail(rs.getString("email"));
+					u.setUserName(rs.getString("userName")); // <-- đúng cột
+					u.setPassWord(rs.getString("passWord")); // <-- đúng cột
+					u.setFullName(rs.getString("fullName"));
+					u.setRoleid(rs.getInt("roleid"));
+					u.setPhone(rs.getString("phone"));
+					 u.setCreatedDate(rs.getDate("createdDate"));
+					 
+					// debug: xác nhận đọc được mật khẩu từ DB
+		                System.out.println("[DAO] findByUsername ok: user=" + u.getUserName()
+		                    + ", dbPass(len)=" + (u.getPassWord() == null ? 0 : u.getPassWord().length()));
+					return u;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		String sql = "SELECT 1 FROM Users WHERE userName = ?";
+		try (Connection con = new DBConnect().getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, username);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next(); // có record nào không
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

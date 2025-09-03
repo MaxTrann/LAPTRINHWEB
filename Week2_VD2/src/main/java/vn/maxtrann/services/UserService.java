@@ -12,5 +12,9 @@ public interface UserService {
 	boolean checkExistUsername(String username);
 
 	boolean checkExistPhone(String phone);
+	boolean existsByUsername(String username);
 
+
+	UserModel authenticate(String username, String password); // trả về user nếu đúng
+    boolean updatePasswordByUsername(String username, String newPassword);
 }
