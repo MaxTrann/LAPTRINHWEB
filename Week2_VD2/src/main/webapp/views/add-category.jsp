@@ -1,45 +1,100 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Thêm Category</title>
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<title>Thêm danh mục mới</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background: #f5f6fa;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.form-container {
+	width: 400px;
+	background: #fff;
+	padding: 25px 30px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #2f3640;
+}
+
+label {
+	font-weight: bold;
+	display: block;
+	margin-bottom: 6px;
+	color: #353b48;
+}
+
+input[type="text"], input[type="file"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #dcdde1;
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background: #00a8ff;
+	border: none;
+	border-radius: 6px;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #0097e6;
+}
+
+.back-link {
+	display: block;
+	text-align: center;
+	margin-top: 12px;
+	color: #718093;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.back-link:hover {
+	text-decoration: underline;
+}
+</style>
 </head>
-<body class="container mt-5">
+<body>
+	<div class="form-container">
+		<h2>Thêm danh mục mới</h2>
+		<form action="${pageContext.request.contextPath}/admin/category/add"
+			method="post" enctype="multipart/form-data">
 
-  <form action="<%=request.getContextPath()%>/admin/category/add"
-        method="post" enctype="multipart/form-data" class="w-50 mx-auto">
+			<div>
+				<label for="name">Tên danh mục:</label> <input type="text" id="name"
+					name="name" required>
+			</div>
 
-    <h2 class="mb-4 text-center">Thêm Category</h2>
+			<div>
+				<label for="icon">Chọn icon:</label> <input type="file" id="icon"
+					name="icon" accept="image/*">
+			</div>
 
-    <!-- alert -->
-    <c:if test="${not empty alert}">
-      <div class="alert alert-info">${alert}</div>
-    </c:if>
-
-    <!-- Tên danh mục -->
-    <div class="input-group mb-3">
-      <span class="input-group-text"><i class="fa fa-tag"></i></span>
-      <input type="text" name="name" class="form-control"
-             placeholder="Tên danh mục" required>
-    </div>
-
-    <!-- Ảnh đại diện -->
-    <div class="input-group mb-4">
-      <span class="input-group-text"><i class="fa fa-image"></i></span>
-      <input type="file" name="icon" class="form-control" accept="image/*">
-    </div>
-
-    <button type="submit" class="btn btn-success w-100 mb-2">
-      <i class="fa fa-plus"></i> Thêm
-    </button>
-    <a href="<%=request.getContextPath()%>/admin/category/list"
-       class="btn btn-secondary w-100">Hủy</a>
-  </form>
-
+			<button type="submit">Thêm mới</button>
+			<a class="back-link"
+				href="${pageContext.request.contextPath}/admin/category/list">Quay
+				lại</a>
+		</form>
+	</div>
 </body>
 </html>

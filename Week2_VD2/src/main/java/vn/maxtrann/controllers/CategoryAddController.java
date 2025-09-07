@@ -1,27 +1,28 @@
 package vn.maxtrann.controllers;
 
 import java.io.File;
+
+
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Paths;
 
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-
-import org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.maxtrann.constant.Constant;
+import jakarta.servlet.http.Part;
+import vn.maxtrann.constant.ConstrantCategory;
 import vn.maxtrann.models.Category;
 import vn.maxtrann.services.CategoryService;
 import vn.maxtrann.services.impl.CategoryServiceImpl;
 
+
 @WebServlet(urlPatterns = { "/admin/category/add" })
+@MultipartConfig
 public class CategoryAddController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -35,38 +36,27 @@ public class CategoryAddController extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+
 		Category category = new Category();
-		DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-		ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
-		servletFileUpload.setHeaderEncoding("UTF-8");
+		category.setCatename(req.getParameter("name"));
 
-		try {
-		    resp.setContentType("text/html");
-		    resp.setCharacterEncoding("UTF-8");
-		    req.setCharacterEncoding("UTF-8");
+		// Xử lý upload file icon
+		Part filePart = req.getPart("icon"); // name="icon" trong form
+		if (filePart != null && filePart.getSize() > 0) {
+			String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+			String newFileName = System.currentTimeMillis() + "." + ext;
 
-		    List<FileItem> items = servletFileUpload.parseRequest(req);
-		    for (FileItem item : items) {
-		        if (item.getFieldName().equals("name")) {
-		            category.setCatename(item.getString("UTF-8"));
-		        } else if (item.getFieldName().equals("icon")) {
-		            String originalFileName = item.getName();
-		            int index = originalFileName.lastIndexOf(".");
-		            String ext = originalFileName.substring(index + 1);
-		            String fileName = System.currentTimeMillis() + "." + ext;
+			File uploadFile = new File(ConstrantCategory.DIR + "/category/" + newFileName);
+			uploadFile.getParentFile().mkdirs();
+			filePart.write(uploadFile.getAbsolutePath());
 
-		            File file = new File(Constant.DIR + "/category/" + fileName);
-		            item.write(file);
-		            category.setIcon("category/" + fileName);
-		        }
-		    }
-
-		    cateService.insert(category);
-		    resp.sendRedirect(req.getContextPath() + "/admin/category/list");
-		} catch (FileUploadException e) {
-		    e.printStackTrace();
-		} catch (Exception e) {
-		    e.printStackTrace();
+			category.setIcon("category/" + newFileName);
 		}
+
+		cateService.insert(category);
+		resp.sendRedirect(req.getContextPath() + "/admin/category/list");
 	}
 }

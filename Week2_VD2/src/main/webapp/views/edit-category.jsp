@@ -1,57 +1,130 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="vn.maxtrann.models.Category"%>
+<%
+Category category = (Category) request.getAttribute("category");
+%>
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Sửa Category</title>
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<title>Sửa danh mục</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background: #f5f6fa;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.form-container {
+	width: 420px;
+	background: #fff;
+	padding: 25px 30px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #2f3640;
+}
+
+label {
+	font-weight: bold;
+	display: block;
+	margin-bottom: 6px;
+	color: #353b48;
+}
+
+input[type="text"], input[type="file"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #dcdde1;
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+img {
+	display: block;
+	margin: 10px auto 15px auto;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background: #44bd32;
+	border: none;
+	border-radius: 6px;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #4cd137;
+}
+
+.back-link {
+	display: block;
+	text-align: center;
+	margin-top: 12px;
+	color: #718093;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.back-link:hover {
+	text-decoration: underline;
+}
+</style>
 </head>
-<body class="container mt-5">
+<body>
+	<div class="form-container">
+		<h2>Sửa danh mục</h2>
+		<form action="${pageContext.request.contextPath}/admin/category/edit"
+			method="post" enctype="multipart/form-data">
 
-  <c:url value="/admin/category/edit" var="editUrl" />
+			<input type="hidden" name="id" value="<%=category.getCateid()%>">
 
-  <form action="${editUrl}" method="post" enctype="multipart/form-data"
-        class="w-50 mx-auto">
+			<div>
+				<label for="name">Tên danh mục:</label> <input type="text" id="name"
+					name="name" value="<%=category.getCatename()%>" required>
+			</div>
 
-    <h2 class="mb-4 text-center">Chỉnh sửa Category</h2>
+			<div>
+				<label>Icon hiện tại:</label>
+				<%
+				if (category.getIcon() != null) {
+				%>
+				<img
+					src="${pageContext.request.contextPath}/uploads/<%= category.getIcon() %>"
+					alt="icon" style="width: 100px; height: 100px;">
+				<%
+				} else {
+				%>
+				<span>Chưa có icon</span>
+				<%
+				}
+				%>
+			</div>
 
-    <!-- id ẩn -->
-    <input type="hidden" name="id" value="${category.id}" />
+			<div>
+				<label for="icon">Chọn icon mới (nếu muốn thay):</label> <input
+					type="file" id="icon" name="icon" accept="image/*">
+			</div>
 
-    <!-- Tên danh mục -->
-    <div class="input-group mb-3">
-      <span class="input-group-text"><i class="fa fa-tag"></i></span>
-      <input type="text" name="name" class="form-control"
-             placeholder="Tên danh mục" value="${category.name}" required>
-    </div>
-
-    <!-- Ảnh hiện tại -->
-    <div class="mb-3 text-center">
-      <c:if test="${not empty category.icon}">
-        <c:url value="/image" var="imgUrl">
-          <c:param name="fname" value="${category.icon}" />
-        </c:url>
-        <img src="${imgUrl}" alt="${category.name}"
-             class="img-fluid border" style="max-width:200px; max-height:150px;">
-      </c:if>
-    </div>
-
-    <!-- Upload ảnh mới -->
-    <div class="input-group mb-4">
-      <span class="input-group-text"><i class="fa fa-image"></i></span>
-      <input type="file" name="icon" class="form-control" accept="image/*">
-    </div>
-
-    <button type="submit" class="btn btn-primary w-100 mb-2">
-      <i class="fa fa-save"></i> Cập nhật
-    </button>
-    <a href="<c:url value='/admin/category/list'/>"
-       class="btn btn-secondary w-100">Hủy</a>
-  </form>
-
+			<button type="submit">Cập nhật</button>
+			<a class="back-link"
+				href="${pageContext.request.contextPath}/admin/category/list">Quay
+				lại</a>
+		</form>
+	</div>
 </body>
 </html>
