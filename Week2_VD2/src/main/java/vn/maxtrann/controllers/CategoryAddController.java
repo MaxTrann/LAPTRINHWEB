@@ -42,14 +42,18 @@ public class CategoryAddController extends HttpServlet {
 		// Xử lý upload file icon
 		Part filePart = req.getPart("icon"); // name="icon" trong form
 		if (filePart != null && filePart.getSize() > 0) {
-			String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-			String newFileName = System.currentTimeMillis() + "." + ext;
+			String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();  // Lấy tên file gốc: ví dụ "logo.png"
+			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);   // Tách đuôi: "png"
+			String newFileName = System.currentTimeMillis() + "." + ext; // Đặt tên mới (tránh trùng): 1712489999999.png
 
+			// Nơi lưu file TRÊN Ổ ĐĨA (đường dẫn tuyệt đối)
+			// ConstantCategory.DIR là thư mục gốc để lưu, ví dụ: D:/uploads  (tự bạn cấu hình)
 			File uploadFile = new File(ConstrantCategory.DIR + "/category/" + newFileName);
-			uploadFile.getParentFile().mkdirs();
-			filePart.write(uploadFile.getAbsolutePath());
-
+			uploadFile.getParentFile().mkdirs();   // Tạo thư mục nếu chưa có
+			filePart.write(uploadFile.getAbsolutePath());   // Ghi file xuống ổ đĩa
+			
+			// Lưu đường dẫn (tương đối) vào DB để sau này hiển thị lại
+			// ví dụ sẽ thành "category/1712489999999.png"
 			category.setIcon("category/" + newFileName);
 		}
 
