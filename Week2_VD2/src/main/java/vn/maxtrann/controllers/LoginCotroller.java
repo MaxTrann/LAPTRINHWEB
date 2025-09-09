@@ -45,7 +45,7 @@ public class LoginCotroller extends HttpServlet {
 		if (u != null) {
 			HttpSession session = req.getSession();
 			session.setAttribute("currentUser", u.getUserName());
-			resp.sendRedirect(req.getContextPath() + "/views/list-category.jsp");
+			resp.sendRedirect(req.getContextPath() + "/views/admin/list-category.jsp");
 		} else {
 			req.setAttribute("alert", "Sai tên đăng nhập hoặc mật khẩu!");
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);

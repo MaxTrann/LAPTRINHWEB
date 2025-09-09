@@ -23,7 +23,7 @@ public class CategoryController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<Category> cateList = cateService.getAll();
 		req.setAttribute("categories", cateList);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/list-category.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/list-category.jsp");
 		dispatcher.forward(req, resp);
 	}
 }

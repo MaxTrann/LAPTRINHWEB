@@ -2,10 +2,8 @@ package vn.maxtrann.controllers;
 
 import java.io.File;
 
-
 import java.io.IOException;
 import java.nio.file.Paths;
-
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -20,20 +18,19 @@ import vn.maxtrann.models.Category;
 import vn.maxtrann.services.CategoryService;
 import vn.maxtrann.services.impl.CategoryServiceImpl;
 
-
 @WebServlet(urlPatterns = { "/admin/category/add" })
 @MultipartConfig
 public class CategoryAddController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	CategoryService cateService = new CategoryServiceImpl();
+	private CategoryService cateService = new CategoryServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/add-category.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/add-category.jsp");
 		dispatcher.forward(req, resp);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");

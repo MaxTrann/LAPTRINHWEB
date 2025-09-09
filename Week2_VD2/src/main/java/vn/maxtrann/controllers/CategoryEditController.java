@@ -24,15 +24,14 @@ import vn.maxtrann.services.impl.CategoryServiceImpl;
 @WebServlet(urlPatterns = { "/admin/category/edit" })
 public class CategoryEditController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	CategoryService cateService = new CategoryServiceImpl();
-	public static final String DIR = "D:/uploads";
+	private CategoryService cateService = new CategoryServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String id = req.getParameter("id");
 		Category category = cateService.get(Integer.parseInt(id));
 		req.setAttribute("category", category);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/edit-category.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/edit-category.jsp");
 		dispatcher.forward(req, resp);
 	}
 
