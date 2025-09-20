@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
 <%@ include file="/common/admin/header.jsp"%>
@@ -31,7 +32,7 @@
 				<c:forEach var="user" items="${users}">
 					<tr>
 						<td>${user.id}</td>
-						<td>${user.name}</td>
+						<td>${user.username}</td>
 						<td>${user.email}</td>
 						<td>${user.fullname}</td>
 						<td>${user.phone}</td>

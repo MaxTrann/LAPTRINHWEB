@@ -3,4 +3,4 @@
 <%@ include file="/common/taglib.jsp" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<c:redirect url="/login" />
+<c:redirect url="${pageContext.request.contextPath}/login"/>

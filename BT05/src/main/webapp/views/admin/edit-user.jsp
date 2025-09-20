@@ -14,7 +14,7 @@
         <input type="hidden" name="id" value="${user.id}"/>
         <div class="mb-3">
             <label class="form-label">Tên đăng nhập</label>
-            <input type="text" name="name" value="${user.name}" class="form-control" required/>
+            <input type="text" name="name" value="${user.username}" class="form-control" required/>
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
