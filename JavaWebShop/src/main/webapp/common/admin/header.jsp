@@ -180,7 +180,7 @@
     <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <div class="container">
-            <a class="navbar-brand" href="#">Bình Shop - Admin Panel</a>
+            <a class="navbar-brand" href="#">Đại Shop - Admin Panel</a>
             <div class="navbar-nav ms-auto">
                 <span class="navbar-text me-3">Xin chào, ${sessionScope.account.fullname} (Admin)</span>
                 <a class="btn btn-outline-light" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
