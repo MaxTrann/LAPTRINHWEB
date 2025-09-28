@@ -184,6 +184,6 @@
       <a href="#" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
     </div>
     
-    <p class="copyright mb-0">&copy; 2025 <span class="shop-name">Bình Shop</span>. All rights reserved.</p>
+    <p class="copyright mb-0">&copy; 2025 <span class="shop-name">Đại Shop</span>. All rights reserved.</p>
   </div>
 </footer>
