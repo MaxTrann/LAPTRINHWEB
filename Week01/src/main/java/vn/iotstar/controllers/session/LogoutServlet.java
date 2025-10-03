@@ -17,7 +17,7 @@ public class LogoutServlet extends HttpServlet{
 		// Lấy session hiện tại (nếu có)
 		HttpSession session = req.getSession(false); // // false: không tạo mới nếu chưa có
 		if (session != null) {
-			session.invalidate(); // Hủy session
+			session.invalidate(); // Hủy session, ko có nghĩa là đăng xuất
 		}
 		
 		req.getRequestDispatcher("login-session.html").include(req, resp);
